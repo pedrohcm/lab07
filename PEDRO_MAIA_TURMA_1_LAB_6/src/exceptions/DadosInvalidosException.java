@@ -5,6 +5,7 @@ package exceptions;
 public class DadosInvalidosException extends Exception {
 	private static final long serialVersionUID = 1L;
 	
+	//n
 	public DadosInvalidosException(String mensagem) {
 		super(mensagem);
 	}
