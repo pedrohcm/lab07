@@ -5,8 +5,8 @@ package exceptions;
 public class StringInvalidaException extends DadosInvalidosException {
 	private static final long serialVersionUID = 1L;
 	
-	public StringInvalidaException() {
-		super("String nao pode ser null ou vazia");
+	public StringInvalidaException(String tipo) {
+		super(tipo + "nao pode ser null ou vazio");
 	}
 	
 	public StringInvalidaException(String mensagem) {

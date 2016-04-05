@@ -12,6 +12,7 @@ import exceptions.DadosInvalidosException;
  * @author Pedro Maia
  */
 public class Luta extends Jogo {
+	private final int VALOR_MAXIMO_X2P = 100000;
 	
 	/** Construtor da classe que apenas chama o construtor da superclasse
 	 */
@@ -25,8 +26,8 @@ public class Luta extends Jogo {
 	 */
 	@Override
 	public int registraJogada(int score, boolean zerou) throws DadosInvalidosException {
-		if((score) > 100000) {
-			score = 100000;
+		if((score) > VALOR_MAXIMO_X2P) {
+			score = VALOR_MAXIMO_X2P;
 		}
 		int x2p = calculax2p(score, zerou);
 		super.registraJogada(score, zerou);

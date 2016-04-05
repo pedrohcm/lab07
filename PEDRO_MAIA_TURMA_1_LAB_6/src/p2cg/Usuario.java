@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import exceptions.DadosInvalidosException;
 import exceptions.DinheiroInsuficienteException;
 import exceptions.JogoInexistenteException;
+import exceptions.JogoJaExisteException;
 import exceptions.StatusUsuarioException;
 import exceptions.StringInvalidaException;
 import exceptions.UsuarioX2pException;
@@ -23,34 +24,41 @@ public class Usuario {
 	private double dinheiro;
 	private int x2pTotal;
 	private TipoDeUsuarioIF statusUsuario;
+	private final int X2P_META = 1000;
 	
 	/**
-	 * Construtor que recebe um nome, cria um ArrayList vazia de jogosComprados e atribui zero
-	 * a quantidade de dinheiro disponivel e ao x2pTotal.
+	 * Construtor que recebe um nome, cria um ArrayList vazia de colecaoJogos e atribui zero
+	 * a quantidade de dinheiro disponivel e ao x2pTotal. Status inicial eh noob.
 	 * @param nome recebe o nome o atribui a variavel do objeto.
 	 * @throws NomeInvalidoException caso o nome (string) seja invalida
 	 */
 	public Usuario(String nome, String login) throws DadosInvalidosException {
 		if(nome == null || nome.trim().equals("")) {
-			throw new StringInvalidaException();
+			throw new StringInvalidaException("Nome");
+		}
+		if(login == null || login.trim().equals("")) {
+			throw new StringInvalidaException("Login");
 		}
 		this.nome = nome;
-		if(login == null || login.trim().equals("")) {
-			throw new StringInvalidaException();
-		}
+		this.login = login;
 		colecaoJogos = new LinkedList<Jogo>();
 		dinheiro = 0;
 		x2pTotal = 0;
 		statusUsuario = new Noob();
 	}
 	
-	public boolean compraJogo(Jogo game) throws DinheiroInsuficienteException {
+	public boolean compraJogo(Jogo game) throws DadosInvalidosException {
+		if(existeJogo(game)) {
+			throw new JogoJaExisteException();
+		}
 		HashMap<String, Double> infoCompra = statusUsuario.compraJogo(game);
 		double valorJogo = infoCompra.get("valor");
 		int x2p = infoCompra.get("x2p").intValue();
+		
 		if(dinheiro < valorJogo) {
 			throw new DinheiroInsuficienteException();
 		}
+		
 		dinheiro -= valorJogo;
 		x2pTotal += x2p;
 		colecaoJogos.add(game);
@@ -61,9 +69,7 @@ public class Usuario {
 		Jogo game = getJogo(nomeJogo);
 		x2pTotal += statusUsuario.recompensar(game);
 		x2pTotal += game.registraJogada(score, zerou);
-		try {
-			verificaMudanca();
-		} catch(Exception e) {}
+		verificaMudanca();
 		return true;
 	}
 	
@@ -76,37 +82,12 @@ public class Usuario {
 	}
 	
 	public void verificaMudanca() {
-		if(x2pTotal > 1000) {
-			try {
-				realizaUpgrade();
-			} catch(Exception e) {
-			}
+		if (x2pTotal > X2P_META) {
+			statusUsuario = new Veterano();
 		}
-		if(x2pTotal < 1000) {
-			try {
-				realizaDowngrade();
-			} catch(Exception e) {
-			}
+		if (x2pTotal < X2P_META) {
+			statusUsuario = new Noob();
 		}
-	}
-	
-	public boolean realizaUpgrade() throws Exception {
-		if(statusUsuario.getClass().getSimpleName().equals("Veterano")) {
-			throw new StatusUsuarioException("veterano");
-		}
-		if(x2pTotal < 1000) {
-			throw new UsuarioX2pException();
-		}
-		statusUsuario = new Veterano();
-		return true;
-	}
-	
-	public boolean realizaDowngrade() throws Exception {
-		if(statusUsuario.getClass().getSimpleName().equals("Noob")) {
-			throw new StatusUsuarioException("noob");
-		}
-		statusUsuario = new Noob();
-		return true;
 	}
 	
 	/** Metodo que percorre na lista de jogos do usuario por um jogo que tenha
@@ -117,7 +98,7 @@ public class Usuario {
 	 */
 	public Jogo getJogo(String nomeJogo) throws DadosInvalidosException {
 		if(nomeJogo == null || nomeJogo.trim().equals("")) {
-			throw new StringInvalidaException();
+			throw new StringInvalidaException("Nome do jogo especificado");
 		}
 		for(Jogo jogo: colecaoJogos) {
 			if(nomeJogo.equals(jogo.getNome())) {
@@ -125,6 +106,13 @@ public class Usuario {
 			}
 		}
 		throw new JogoInexistenteException();
+	}
+	
+	public boolean existeJogo(Jogo jogo) {
+		if(colecaoJogos.contains(jogo)) {
+			return true;
+		}
+		return false;
 	}
 	
 	/** Metodo que percorre toda a lista de jogosComprados e guarda

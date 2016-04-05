@@ -30,6 +30,8 @@ public class UsuarioTest {
 		arrayJogabilidade = new HashSet<Jogabilidade>();
 		arrayJogabilidade.add(Jogabilidade.COOPERATIVO);
 		mortalKombat = new Luta("Mortal Kombat", 100, arrayJogabilidade);
+		theWitcher = new RPG("The Witcher", 150, arrayJogabilidade);
+		raymanLegends = new Plataforma("Rayman Legends", 50, arrayJogabilidade);
 	}
 
 	@Test
@@ -39,22 +41,20 @@ public class UsuarioTest {
 			pedro.compraJogo(mortalKombat);
 			assertEquals(10.00, pedro.getDinheiro(), 0.01);
 			
-			/*
-			assertEquals(0,0, pedro.getDinheiro());
 			assertEquals(1, pedro.getJogos().size());
 			assertEquals(1000, pedro.getX2pTotal());
 			
 			pedro.adicionaDinheiro(50);
 			pedro.compraJogo(raymanLegends);
-			
 			assertEquals(1500, pedro.getX2pTotal());
-			assertEquals(15,00, pedro.getDinheiro()); // 150 - 90 - 45 (10% de desconto) = 15
-			*/
+			
+			assertEquals(15.00, pedro.getDinheiro(), 0.01); // 150 - 90 - 45 (10% de desconto) = 15
+			
 		} catch(Exception e) {
 			fail();
 		}
 		
-		/*
+		
 		try {
 			pedro.compraJogo(theWitcher);
 			fail();
@@ -68,26 +68,33 @@ public class UsuarioTest {
 		} catch(Exception e) {
 			assertEquals("Jogo ja existe na biblioteca", e.getMessage());
 		}
-		*/
+		
 	}
 	
-	/*
+	
 	@Test
-	public void testNoob() {
+	public void testUsuario() {
 		try {
-			Usuario nomeVazio = new Noob("");
+			Usuario nomeVazio = new Usuario("", "");
 		} catch(Exception e) {
-			assertEquals("Nome nao pode ser null ou vazio", e.getMessage());
+			assertEquals("Nome ou login nao podem null ou vazio", e.getMessage());
 		}
 		
 		try {
-			Usuario nomeNull = new Noob(null);
+			Usuario nomeNull = new Usuario(null, "");
 		} catch(Exception e){
-			assertEquals("Nome nao pode ser null ou vazio", e.getMessage());
+			assertEquals("Nome ou login nao podem ser null ou vazio", e.getMessage());
+		}
+		
+		try {
+			Usuario loginVazio = new Usuario("teste", "");
+		} catch(Exception e){
+			assertEquals("Nome ou login nao podem ser null ou vazio", e.getMessage());
 		}
 	}
+
 	
-	
+	/*
 	@Test
 	public void testRegistraJogada() {
 		try {

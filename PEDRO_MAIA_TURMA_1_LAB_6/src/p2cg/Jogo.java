@@ -20,11 +20,6 @@ public abstract class Jogo {
 	private int quantJogada;
 	private int quantZerada;
 	private HashSet<Jogabilidade> jogabilidade;
-	private Jogabilidade OFFLINE;
-	private Jogabilidade MULTIPLAYER;
-	private Jogabilidade ONLINE;
-	private Jogabilidade COOPERATIVO;
-	private Jogabilidade COMPETITIVO;
 	
 	 /** Construtor que recebe nome e preco, atribui 0 as variaveis maiorScore, quantidade de vezes que o jogo
 	 * foi jogado, quantidade de vezes que o jogo foi zerado e cria um nova colecao que guarda seu estilo de jogabilidade.
@@ -77,49 +72,7 @@ public abstract class Jogo {
 		quantJogada += 1;
 		return 0;
 	}
-	
-	public int x2pRecompensaVeterano() {
-		int x2p = 0;
-		for(Jogabilidade estilo: jogabilidade) {
-			if(estilo == ONLINE) {
-				x2p += 10;
-			}
-			if(estilo == COOPERATIVO) {
-				x2p += 20;
-			}
-		}
-		return x2p;
-	}
-	
-	public int x2pPunicaoNoob() {
-		int x2p = 0;
-		for(Jogabilidade estilo: jogabilidade) {
-			if(estilo == ONLINE) {
-				x2p -= 10;
-			}
-			if(estilo == COOPERATIVO) {
-				x2p -= 50;
-			}
-			if(estilo == COMPETITIVO) {
-				x2p -= 20;
-			}
-		}
-		return x2p;
-	}
-	
-	public int x2pPunicaoVeterano() {
-		int x2p = 0;
-		for(Jogabilidade estilo: jogabilidade) {
-			if(estilo == COOPERATIVO) {
-				x2p -= 20;
-			}
-			if(estilo == COMPETITIVO) {
-				x2p -= 20;
-			}
-		}
-		return x2p;
-	}
-	
+		
 	public abstract int calculax2p(int score, boolean zerou);
 	
 	public String getNome() {
