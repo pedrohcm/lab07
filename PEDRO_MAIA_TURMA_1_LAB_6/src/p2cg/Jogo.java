@@ -29,7 +29,7 @@ public abstract class Jogo {
 	 */
 	public Jogo (String nome, double preco, HashSet<Jogabilidade> jogabilidade) throws DadosInvalidosException {
 		if(nome == null || nome.trim().equals("")) {
-			throw new StringInvalidaException();
+			throw new StringInvalidaException("nome");
 		}
 		if(preco < 0) {
 			throw new ValorInvalidoException();

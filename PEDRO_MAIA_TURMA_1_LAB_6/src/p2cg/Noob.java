@@ -49,7 +49,7 @@ public class Noob implements TipoDeUsuarioIF {
 	public HashMap<String, Double> compraJogo(Jogo game) {
 		HashMap<String, Double> infoCompra = new HashMap<String, Double>();
 		infoCompra.put("valor", game.getPreco() * 0.9);
-		infoCompra.put("x2p", game.getPreco().intValue() * 10.0);
+		infoCompra.put("x2p", game.getPreco() * 10);
 		return infoCompra;
 	}
 }

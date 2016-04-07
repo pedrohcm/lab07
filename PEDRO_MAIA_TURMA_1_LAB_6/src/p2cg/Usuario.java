@@ -81,8 +81,8 @@ public class Usuario {
 		return true;
 	}
 	
-	public void verificaMudanca() {
-		if (x2pTotal > X2P_META) {
+	private void verificaMudanca() {
+		if (x2pTotal >= X2P_META) {
 			statusUsuario = new Veterano();
 		}
 		if (x2pTotal < X2P_META) {

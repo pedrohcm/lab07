@@ -51,25 +51,19 @@ public class LojaFacade {
 		return loja.existeUsuario(login);
 	}
 
-	public boolean upgrade(String login) {
+	public boolean recompensar(String login, String nomeJogo, int score, boolean zerou) throws DadosInvalidosException {
 		try {
-			loja.upgrade(login);
-			return true;
+			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
 		}
+		return loja.recompensar(login, nomeJogo, score, zerou);
 	}
 
-	public boolean downgrade(String login) {
-		try {
-			loja.downgrade(login);
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
-		}
+	public boolean punir(String login, String nomeJogo, int score, boolean zerou) throws DadosInvalidosException {
+		return loja.punir(login, nomeJogo, score, zerou);
 	}
+	
+	
 	
 	
 }

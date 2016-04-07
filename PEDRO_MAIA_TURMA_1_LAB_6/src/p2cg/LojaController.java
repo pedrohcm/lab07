@@ -70,7 +70,7 @@ public class LojaController {
 			throw new UsuarioJaExisteException();	
 		}
 		if(login == null || login.trim().equals("")) {
-			throw new StringInvalidaException();
+			throw new StringInvalidaException("login");
 		}
 		Usuario usuario = factoryUsuario.criaUsuario(nomeUsuario, login, tipo);
 		listaUsuarios.put(login, usuario);
@@ -115,6 +115,14 @@ public class LojaController {
 			}
 		}
 		throw new JogoInexistenteException();
+	}
+	
+	public boolean recompensar(String login, String nomeJogo, int score, boolean zerou) throws DadosInvalidosException {
+		return getUsuario(login).recompensar(nomeJogo, score, zerou);
+	}
+	
+	public boolean punir(String login, String nomeJogo, int score, boolean zerou) throws DadosInvalidosException {
+		return getUsuario(login).punir(nomeJogo, score, zerou);
 	}
 	
 	/**
@@ -162,16 +170,6 @@ public class LojaController {
 			Jogo copia = factoryJogo.criaJogo(game.getNome(), game.getPreco(), tipoJogo, game.getJogabilidade());
 			listaUsuarios.get(login).compraJogo(copia);
 			return true;
-	}
-	
-	public boolean upgrade(String login) throws Exception {
-		Usuario usuario = getUsuario(login);
-		return usuario.realizaUpgrade();
-	}
-	
-	public boolean downgrade(String login) throws Exception {
-		Usuario usuario = getUsuario(login);
-		return usuario.realizaDowngrade();
 	}
 	
 	/**
